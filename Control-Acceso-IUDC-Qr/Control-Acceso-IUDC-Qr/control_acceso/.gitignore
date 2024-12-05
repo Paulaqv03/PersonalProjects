@@ -1,0 +1,35 @@
+# Entornos virtuales
+env/
+venv/
+.venv/
+
+# Archivos compilados de Python
+__pycache__/
+*.pyc
+*.pyo
+
+# Configuración local y credenciales
+*.env
+settings_local.py
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Logs y cachés
+*.log
+*.coverage
+.coverage.*
+.pytest_cache/
+
+# Migraciones
+**/migrations/*.py
+!**/migrations/__init__.py
+
+# Archivos de IDEs
+.vscode/
+.idea/
+*.iml
+
+# Imágenes temporales
+temp_image.png
