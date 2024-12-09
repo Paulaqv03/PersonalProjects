@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "title": "Desarrollador Frontend",
+        "company": "Empresa X",
+        "description": "Buscamos un desarrollador frontend para unirse a nuestro equipo.",
+        "location": "Remoto"
+    },
+    {
+        "id": 2,
+        "title": "Desarrollador",
+        "company": "Empresa Y",
+        "description": "Buscamos un desarrollador backend con experiencia en Node.js.",
+        "location": "Oficina"
+    }
+]

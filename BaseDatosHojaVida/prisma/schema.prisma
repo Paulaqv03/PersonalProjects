@@ -1,0 +1,201 @@
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Modelo RegistroSesion_Usuario
+model RegistroSesion_Usuario {
+  id                String  @id @default(uuid())
+  primerNombre      String
+  segundoNombre     String?
+  primerApellido    String
+  segundoApellido   String?
+  tipoDocumento     String
+  numeroDocumento   String
+  correoElectronico String  @unique
+  contrasena        String
+  token             String  @unique
+  EresAdministrador Boolean @default(false)
+
+  // Relación con Administrador
+  administrador Administrador?
+
+  // Relación con Dashboard_Usuarios
+  dashboard   Dashboard_Usuarios? @relation(fields: [dashboardId], references: [id])
+  dashboardId Int?                @unique
+
+  // Relación con LogIn
+  LogIn LogIn?
+
+  // Relación opuesta con MiHojaVida
+  MiHojaVida MiHojaVida[] // Relación uno a muchos, MiHojaVida puede tener muchos registros
+}
+
+model Administrador {
+  id                      Int                     @id @default(autoincrement())
+  CorreoELectronicoAdmin  String                  @unique
+  ContrasenaAdmin         String
+  TokenAdmin              String                  @unique
+  //Relacion uno a uno con los Registros
+  RegistroSesion_Usuario  RegistroSesion_Usuario? @relation(fields: [registroSesionUsuarioId], references: [id]) //Cambios
+  registroSesionUsuarioId String?                 @unique
+}
+
+model LogIn {
+  id                      Int                     @id @default(autoincrement())
+  correoElectronico       String                  @unique
+  contrasena              String
+  registroSesionUsuarioId String?                 @unique // Añadimos @unique para cumplir con la relación uno a uno
+  RegistroSesion_Usuario  RegistroSesion_Usuario? @relation(fields: [registroSesionUsuarioId], references: [id])
+}
+
+// Modelo DireccionUsuario
+model DireccionUsuario {
+  id                  Int    @id @default(autoincrement())
+  paisResidencia      String
+  localidadResidencia String
+  codigoPostal        String
+
+  datosRegistroId Int?           @unique
+  DatosRegistro   DatosRegistro? @relation(fields: [datosRegistroId], references: [id])
+}
+
+// Modelo ContactoUsuario
+model ContactoUsuario {
+  id                Int    @id @default(autoincrement())
+  numeroContacto    String
+  correoElectronico String
+
+  datosRegistroId Int?           @unique
+  DatosRegistro   DatosRegistro? @relation(fields: [datosRegistroId], references: [id])
+}
+
+// Modelo MiPerfil_Usuario
+model MiPerfil_Usuario {
+  id             Int    @id @default(autoincrement())
+  foto           String
+  nombreCompleto String
+  edad           Int
+  estado         String
+
+  dashboard Dashboard_Usuarios[]
+}
+
+// Modelo Dashboard_Usuarios
+model Dashboard_Usuarios {
+  id                    Int                     @id @default(autoincrement())
+  miPerfilId            Int
+  MiPerfil_Usuario      MiPerfil_Usuario        @relation(fields: [miPerfilId], references: [id])
+  busquedaOfertas       BusquedaOfertas[]
+  ofertasSeleccionadas  OfertasSeleccionadas[]
+  notificaciones        Boolean
+  politicaPrivacidad    Boolean
+  registroSesionUsuario RegistroSesion_Usuario? // Relacion uno a uno con el Registro
+}
+
+// Modelo BusquedaOfertas
+model BusquedaOfertas {
+  id               Int      @id @default(autoincrement())
+  categoria        String
+  modalidadTrabajo String
+  fechaPublicacion DateTime
+  ubicacionCentro  String
+  idioma           String
+
+  dashboard_UsuariosId Int?
+  Dashboard_Usuarios   Dashboard_Usuarios? @relation(fields: [dashboard_UsuariosId], references: [id])
+}
+
+// Modelo OfertasSeleccionadas
+model OfertasSeleccionadas {
+  id                   Int                 @id @default(autoincrement())
+  dashboard_UsuariosId Int?
+  Dashboard_Usuarios   Dashboard_Usuarios? @relation(fields: [dashboard_UsuariosId], references: [id])
+}
+
+// Modelo HabilidadesTecnicas
+model HabilidadesTecnicas {
+  id          Int          @id @default(autoincrement())
+  descripcion String
+  MiHojaVida  MiHojaVida[]
+}
+
+// Modelo TrabajoPrevios
+model TrabajoPrevios {
+  id                Int          @id @default(autoincrement())
+  descripcion       String
+  tiempoExperiencia Int
+  MiHojaVida        MiHojaVida[]
+}
+
+// Modelo Educacion
+model Educacion {
+  id          Int          @id @default(autoincrement())
+  descripcion String
+  MiHojaVida  MiHojaVida[]
+}
+
+// Modelo Referencias
+model Referencias {
+  id                Int          @id @default(autoincrement())
+  nombreCompetencia String
+  MiHojaVida        MiHojaVida[]
+}
+
+// Modelo Idiomas
+model Idiomas {
+  id               Int          @id @default(autoincrement())
+  descripcion      String
+  nivelCompetencia String
+  MiHojaVida       MiHojaVida[]
+}
+
+// Modelo Certificados
+model Certificados {
+  id           Int          @id @default(autoincrement())
+  descripcion  String
+  fechaDiploma DateTime
+  MiHojaVida   MiHojaVida[]
+}
+
+// Modelo MiHojaVida
+model MiHojaVida {
+  id Int @id @default(autoincrement())
+
+  registroId            String
+  trabajosPreviosId     Int
+  habilidadesTecnicasId Int
+  educacionId           Int
+  referenciasId         Int
+  idiomasId             Int
+  certificadosId        Int
+
+  RegistroSesion_Usuario RegistroSesion_Usuario @relation(fields: [registroId], references: [id])
+  TrabajoPrevios         TrabajoPrevios         @relation(fields: [trabajosPreviosId], references: [id])
+  HabilidadesTecnicas    HabilidadesTecnicas    @relation(fields: [habilidadesTecnicasId], references: [id])
+  Educacion              Educacion              @relation(fields: [educacionId], references: [id])
+  Referencias            Referencias            @relation(fields: [referenciasId], references: [id])
+  Idiomas                Idiomas                @relation(fields: [idiomasId], references: [id])
+  Certificados           Certificados           @relation(fields: [certificadosId], references: [id])
+}
+
+// Modelo DatosRegistro
+model DatosRegistro {
+  id                       Int      @id @default(autoincrement())
+  fechaNacimiento          DateTime
+  paisNacimiento           String
+  departamentoNacimiento   String
+  municipioNacimiento      String
+  fechaExpedicionDocumento DateTime
+  paisExpedicion           String
+  departamentoExpedicion   String
+  municipioExpedicion      String
+  genero                   String
+
+  direccionUsuario DireccionUsuario?
+  contactoUsuario  ContactoUsuario?
+}
