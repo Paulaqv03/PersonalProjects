@@ -7,10 +7,10 @@ function App() {
   const [count, setCount] = useState(0)
   const title = "IUDC Sistema de Contol de Acceso"
   return (
-    <>
+    <div >
       <Header title={title}/>
       <Footer/>
-    </>
+    </div>
   )
 }
 

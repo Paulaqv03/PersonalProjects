@@ -1,6 +1,6 @@
 function Header({ title }) {
     return (
-        <header className="w-full h-20 bg-[#002647] fixed top-0 left-0 z-50 flex items-center">
+        <header className="w-full py-8 bg-[#002647] fixed top-0 left-0 z-50 flex items-center">
             <div className="flex items-center justify-between w-full px-5">
                 {/* Logo alineado a la izquierda */}
                 <div className="flex items-center">
