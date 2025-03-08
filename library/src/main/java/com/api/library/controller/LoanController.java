@@ -20,8 +20,11 @@ import com.api.library.model.entity.Loans;
 import com.api.library.payload.MessageResponse;
 import com.api.library.service.ILoansService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 @RestController
 @RequestMapping("/api/v1/")
+@Tag(name = "Gestion de Prestamos", description = "Operaciones relacionadas con los prestamos de una libreria")
 public class LoanController {
     @Autowired
     private ILoansService loansService;

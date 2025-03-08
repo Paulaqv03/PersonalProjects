@@ -21,8 +21,12 @@ import com.api.library.model.entity.Books;
 import com.api.library.payload.MessageResponse;
 import com.api.library.service.IBooksService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+
 @RestController
 @RequestMapping("/api/v1/")
+@Tag(name = "Gestion de Libros", description = "Operaciones relacionadas con los libros en una biblioteca")
 public class BookController {
     @Autowired
     private IBooksService booksService;

@@ -6,6 +6,8 @@ import com.api.library.model.entity.Users;
 import com.api.library.payload.MessageResponse;
 import com.api.library.service.IUsersService;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/")
+@Tag(name = "Gestion de Usuarios", description = "Operaciones relacionadas con los usuarios de una libreria")
 public class UsersController {
     @Autowired
     private IUsersService usersService;
